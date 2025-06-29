@@ -1,7 +1,7 @@
 [project]
 name = "e2e-taxi-ride-duration-prediction"
 version = "0.1.0"
-description = "Add your description here"
+description = "An end-to-end MLOps project showcasing a complete machine learning pipeline using the NYC Taxi dataset. The goal is to predict taxi ride durations based on trip data and demonstrate modern MLOps practices, from data ingestion to model deployment and monitoring."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
