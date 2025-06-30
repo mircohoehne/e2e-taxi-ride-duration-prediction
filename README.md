@@ -1,3 +1,5 @@
+![Status](https://img.shields.io/badge/Status-Work_in_progress_(Level_1)-yellow)
+
 An end-to-end MLOps project showcasing a complete machine learning pipeline using the NYC Taxi dataset. The goal is to predict taxi ride durations based on trip data and demonstrate modern MLOps practices, from data ingestion to model deployment and monitoring.
 
 ## Project Overview
@@ -24,6 +26,14 @@ The development will be iterative and roughly follow the [Machine Learning opera
 | 4     | Full MLOps Automated Operations | - Full system automated and easily monitored<br> - Production systems are providing information on how to improve and, in some cases, automatically improve with new models<br> - Approaching a zero-downtime system<br> | - Automated model training and testing<br> - Verbose, centralized metrics from deployed model<br>                                                              |
 
 > Note: The first development iteration begins at Level 1. Level 0 is described for context only and is not implemented in any way.
+
+## Roadmap
+
+- [ ] Level 1: DevOps, but no MLOps
+- [ ] Level 2: Automated Training
+- [ ] Level 3: Automated Model Deployment
+- [ ] Level 4: Full MLOps Automated Operations
+
 
 ## Other resources used to build and learn about MLOps:
 [mlops-zoomcamp - DataTalksClub](https://github.com/DataTalksClub/mlops-zoomcamp)<br>
