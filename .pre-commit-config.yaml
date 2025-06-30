@@ -17,5 +17,6 @@ repos:
 -   repo: https://github.com/jorisroovers/gitlint
     rev: v0.19.1
     hooks:
+    # Enforce Conventional Commits style
     -   id: gitlint
-        args: [--contrib=CT1, --msg-filename]
+        args: [--contrib=contrib-title-conventional-commits,--ignore=body-is-missing, --msg-filename]
