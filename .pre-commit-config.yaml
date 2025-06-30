@@ -14,3 +14,8 @@ repos:
         args: [--extend-select="I", --fix]
       # Run the formatter.
       - id: ruff-format
+-   repo: https://github.com/jorisroovers/gitlint
+    rev: v0.19.1
+    hooks:
+    -   id: gitlint
+        args: [--contrib=CT1, --msg-filename]
