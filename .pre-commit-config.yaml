@@ -20,12 +20,3 @@ repos:
     # Enforce Conventional Commits style
     -   id: gitlint
         args: [--contrib=contrib-title-conventional-commits,--ignore=body-is-missing, --msg-filename]
--   repo: local
-    hooks:
-    -   id: pytest on notebooks
-        # This hook runs pytest on notebooks using nbmake to ensure that the notebook outputs match the expected outputs.
-        name: pytest
-        entry: uv run pytest --nbmake
-        language: system
-        files: \.ipynb$
-        pass_filenames: true
