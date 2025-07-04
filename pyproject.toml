@@ -21,3 +21,6 @@ dev = [
     "pytest>=8.4.1",
     "ruff>=0.12.1",
 ]
+
+[tool.setuptools]
+packages = ["e2e_taxi_ride_duration_prediction"]
