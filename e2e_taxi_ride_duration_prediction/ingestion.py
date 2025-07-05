@@ -19,7 +19,6 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
             logging.info(
                 f"Found existing parquet file for NYC Taxi data from {start[0]}-{start[1]} to {end[0]}-{end[1]}. Loading it."
             )
-            df = pl.read_parquet(output_file)
         else:
             logging.info(
                 f"Downloading NYC Taxi data from {start[0]}-{start[1]} to {end[0]}-{end[1]}."
@@ -84,7 +83,7 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
                 logging.info(f"Saving concatenated parquet file to {output_file}")
                 df.write_parquet(output_file.resolve())
 
-        return df
+        return pl.scan_parquet(output_file)
 
     except FileNotFoundError as e:
         logging.error(f"File not found error: {str(e)}")
