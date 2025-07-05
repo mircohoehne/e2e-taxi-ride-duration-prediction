@@ -7,7 +7,7 @@ import requests
 from tqdm.auto import tqdm
 
 
-def get_nyc_taxi(root: Path, start=(2022, 1), end=(2025, 5)):
+def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
     try:
         # Check if the combined file already exists
         output_file = (
