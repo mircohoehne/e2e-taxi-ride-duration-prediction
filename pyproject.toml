@@ -7,9 +7,11 @@ requires-python = ">=3.11"
 dependencies = [
     "ipykernel>=6.29.5",
     "ipywidgets>=8.1.7",
+    "pandas>=2.3.1",
     "polars>=1.31.0",
     "pyarrow>=20.0.0",
     "requests>=2.32.4",
+    "seaborn>=0.13.2",
     "tqdm>=4.67.1",
 ]
 
