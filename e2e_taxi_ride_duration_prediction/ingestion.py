@@ -68,20 +68,21 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
                         "No parquet files were downloaded to the temporary directory."
                     )
 
-                dfs = [
-                    pl.read_parquet(x)
+                lfs = [
+                    pl.scan_parquet(x)
                     for x in tqdm(
                         parquet_files,
                         desc="Reading temp Parquet files.",
                         total=len(parquet_files),
                     )
                 ]
-                df = pl.concat(dfs, how="diagonal_relaxed", rechunk=True)
+                logging.info("Concatenating and sorting the data.")
+                lf = pl.concat(lfs, how="diagonal_relaxed", rechunk=True).sort("tpep_pickup_datetime")
 
                 output_file.parent.mkdir(parents=True, exist_ok=True)
 
                 logging.info(f"Saving concatenated parquet file to {output_file}")
-                df.write_parquet(output_file.resolve())
+                lf.sink_parquet(output_file.resolve(), engine="streaming")
 
         return pl.scan_parquet(output_file)
 
