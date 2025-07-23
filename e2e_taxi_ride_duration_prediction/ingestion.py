@@ -86,9 +86,6 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
 
         return pl.scan_parquet(output_file)
 
-    except FileNotFoundError as e:
-        logging.error(f"File not found error: {str(e)}")
-        raise
     except requests.RequestException as e:
         logging.error(f"Network error occurred: {str(e)}")
         raise
