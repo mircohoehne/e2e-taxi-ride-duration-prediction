@@ -1,12 +1,12 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
-    -   id: check-added-large-files
--   repo: https://github.com/astral-sh/ruff-pre-commit
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+  - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.12.1
     hooks:
       # Run the linter with import sorting.
@@ -14,8 +14,14 @@ repos:
         args: [--extend-select=I, --fix]
       # Run the formatter.
       - id: ruff-format
--   repo: https://github.com/jorisroovers/gitlint
+  - repo: https://github.com/jorisroovers/gitlint
     rev: v0.19.1
     hooks:
-    # Enforce Conventional Commits style
-    -   id: gitlint
+      # Enforce Conventional Commits style
+      - id: gitlint
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
