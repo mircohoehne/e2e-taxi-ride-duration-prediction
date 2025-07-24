@@ -19,9 +19,15 @@ repos:
     hooks:
       # Enforce Conventional Commits style
       - id: gitlint
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks
   - repo: local
     hooks:
       - id: pytest
         name: pytest
-        entry: uv run pytest
+        entry: uv run pytest tests
         language: system
+        pass_filenames: false
+        always_run: true
