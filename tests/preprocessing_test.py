@@ -1,8 +1,9 @@
-from pandas import Categorical
-import pytest
-import polars as pl
 from datetime import datetime
+
+import polars as pl
+import pytest
 from polars.testing import assert_frame_equal
+
 from e2e_taxi_ride_duration_prediction.preprocessing import (
     basic_preprocessing,
     calculate_duration,
