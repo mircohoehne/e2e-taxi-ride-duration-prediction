@@ -12,7 +12,9 @@ def calculate_duration(lf: pl.LazyFrame) -> pl.LazyFrame:
     )
 
 
-def filter_by_date_range(lf: pl.LazyFrame, start: pl.Datetime, end: pl.Datetime) -> pl.LazyFrame:
+def filter_by_date_range(
+    lf: pl.LazyFrame, start: pl.Datetime, end: pl.Datetime
+) -> pl.LazyFrame:
     return lf.filter(
         (pl.col("tpep_pickup_datetime") < end)
         & (pl.col("tpep_pickup_datetime") >= start)
@@ -23,15 +25,17 @@ def filter_valid_durations(lf: pl.LazyFrame) -> pl.LazyFrame:
     return lf.filter((pl.col("duration") > 0) & (pl.col("duration") <= 60))
 
 
-def cast_categorical_columns(lf: pl.LazyFrame) -> pl.LazyFrame:
-    categorical_columns = [
+def cast_categorical_columns(
+    lf: pl.LazyFrame,
+    categorical_columns: list[str] = [
         "VendorID",
         "RatecodeID",
         "store_and_fwd_flag",
         "PULocationID",
         "DOLocationID",
         "payment_type",
-    ]
+    ],
+) -> pl.LazyFrame:
     return lf.with_columns(
         [pl.col(col).cast(pl.Utf8).cast(pl.Categorical) for col in categorical_columns]
     )
@@ -66,8 +70,7 @@ def basic_preprocessing(
         Keep in mind that the execution is lazy, i.e. the operations will be performed when .collect() is called.
     """
     return (
-        lf
-        .pipe(calculate_duration)
+        lf.pipe(calculate_duration)
         .pipe(filter_by_date_range, start, end)
         .pipe(filter_valid_durations)
         .pipe(cast_categorical_columns)
