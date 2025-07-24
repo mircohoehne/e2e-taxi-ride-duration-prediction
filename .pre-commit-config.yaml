@@ -6,19 +6,19 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-added-large-files
+    # Formatting and import sorting
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.12.1
     hooks:
-      # Run the linter with import sorting.
       - id: ruff-check
         args: [--extend-select=I, --fix]
-      # Run the formatter.
       - id: ruff-format
+    # enforce conventional commit style
   - repo: https://github.com/jorisroovers/gitlint
     rev: v0.19.1
     hooks:
-      # Enforce Conventional Commits style
       - id: gitlint
+    # secret detection
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
     hooks:
