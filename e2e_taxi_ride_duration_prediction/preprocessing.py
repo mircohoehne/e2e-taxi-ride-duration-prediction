@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import polars as pl
 
 
@@ -13,7 +15,7 @@ def calculate_duration(lf: pl.LazyFrame) -> pl.LazyFrame:
 
 
 def filter_by_date_range(
-    lf: pl.LazyFrame, start: pl.Datetime, end: pl.Datetime
+    lf: pl.LazyFrame, start: datetime, end: datetime
 ) -> pl.LazyFrame:
     return lf.filter(
         (pl.col("tpep_pickup_datetime") < end)
@@ -50,7 +52,7 @@ def create_pickup_dropoff_pairs(lf: pl.LazyFrame) -> pl.LazyFrame:
 
 
 def basic_preprocessing(
-    lf: pl.LazyFrame, start: pl.Datetime, end: pl.Datetime
+    lf: pl.LazyFrame, start: datetime, end: datetime
 ) -> pl.LazyFrame:
     """Basic preprocessing of the LazyFrame.
 
