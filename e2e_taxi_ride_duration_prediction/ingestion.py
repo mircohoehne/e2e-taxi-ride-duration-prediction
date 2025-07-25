@@ -1,10 +1,10 @@
-import logging
 import tempfile
 from pathlib import Path
 from typing import List, Tuple
 
 import polars as pl
 import requests
+from loguru import logger
 from tqdm.auto import tqdm
 
 
@@ -72,10 +72,10 @@ def download_parquet_file(
                 out.write(r.content)
             return True
         else:
-            logging.warning(f"Failed to download {url}. Status code: {r.status_code}")
+            logger.warning(f"Failed to download {url}. Status code: {r.status_code}")
             return False
     except requests.RequestException as e:
-        logging.error(f"Network error downloading {url}: {str(e)}")
+        logger.error(f"Network error downloading {url}: {str(e)}")
         return False
 
 
@@ -101,13 +101,13 @@ def concatenate_parquet_files(file_paths: List[Path], output_path: Path) -> None
         )
     ]
 
-    logging.info("Concatenating and sorting the data.")
+    logger.info("Concatenating and sorting the data.")
     lf = pl.concat(lfs, how="diagonal_relaxed", rechunk=True).sort(
         "tpep_pickup_datetime"
     )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    logging.info(f"Saving concatenated parquet file to {output_path}")
+    logger.info(f"Saving concatenated parquet file to {output_path}")
     lf.sink_parquet(output_path.resolve(), engine="streaming")
 
 
@@ -116,11 +116,11 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
         output_file = get_data_path(root, start, end)
 
         if output_file.exists():
-            logging.info(
+            logger.info(
                 f"Found existing parquet file for NYC Taxi data from {start[0]}-{start[1]} to {end[0]}-{end[1]}. Loading it."
             )
         else:
-            logging.info(
+            logger.info(
                 f"Downloading NYC Taxi data from {start[0]}-{start[1]} to {end[0]}-{end[1]}."
             )
 
@@ -142,7 +142,7 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
                         url = base_url.format(year, month)
                         download_parquet_file(url, file_path, session)
 
-                logging.info("Concatenating all downloaded parquet files.")
+                logger.info("Concatenating all downloaded parquet files.")
                 parquet_files = [
                     f
                     for f in temp_folder_path.iterdir()
@@ -159,10 +159,10 @@ def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
         return pl.scan_parquet(output_file)
 
     except requests.RequestException as e:
-        logging.error(f"Network error occurred: {str(e)}")
+        logger.error(f"Network error occurred: {str(e)}")
         raise
     except Exception as e:
-        logging.error(
+        logger.error(
             f"An error occurred while downloading or processing the NYC Taxi data: {str(e)}"
         )
         raise

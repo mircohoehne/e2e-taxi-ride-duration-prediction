@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -203,7 +202,7 @@ def test_get_nyc_taxi_data_download_and_concatenate(
 
 
 def test_get_nyc_taxi_data_existing_file(tmp_path, caplog):
-    caplog.set_level(logging.INFO)
+    caplog.set_level("INFO")
 
     output_file = tmp_path / "data/raw/yellow_tripdata_2023-01_2023-02.parquet"
     output_file.parent.mkdir(parents=True, exist_ok=True)
