@@ -88,7 +88,7 @@ def train_linear_regression(
     return linear_regression_model
 
 
-def test_linear_regression(
+def validate_linear_regression(
     X_test: csr_matrix,
     y_test: npt.NDArray,
     model: LinearRegression,
@@ -96,9 +96,9 @@ def test_linear_regression(
     logger.info("Calculating predictions")
     y_pred = model.predict(X_test)
     results = {
-        "MAE": mean_absolute_error(y_pred, y_test),
-        "RMSE": root_mean_squared_error(y_pred, y_test),
-        "r2_score": r2_score(y_pred, y_test),
+        "MAE": mean_absolute_error(y_test, y_pred),
+        "RMSE": root_mean_squared_error(y_test, y_pred),
+        "r2_score": r2_score(y_test, y_pred),
     }
     logger.info(f"Results: {results}")
     return results
