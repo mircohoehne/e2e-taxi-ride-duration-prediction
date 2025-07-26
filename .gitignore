@@ -17,3 +17,6 @@ wheels/
 # Data
 data/
 *.parquet
+results
+models
+logs
