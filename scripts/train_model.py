@@ -10,7 +10,7 @@ from e2e_taxi_ride_duration_prediction.ingestion import get_nyc_taxi_data
 from e2e_taxi_ride_duration_prediction.preprocessing import basic_preprocessing
 from e2e_taxi_ride_duration_prediction.training import (
     dict_vectorize_features,
-    save_model,
+    save_model_and_vectorizer,
     time_series_train_test_split,
     train_linear_regression,
     validate_linear_regression,
@@ -51,7 +51,7 @@ def main():
 
     # Vectorization
     logger.info("Vectorizing features")
-    X_train_vec, X_test_vec = dict_vectorize_features(
+    X_train_vec, X_test_vec, fitted_dict_vectorizer = dict_vectorize_features(
         X_train, X_test, features=["pickup_dropoff_pair", "trip_distance"]
     )
     y_train_vec, y_test_vec = vectorize_target(y_train, y_test)
@@ -65,8 +65,8 @@ def main():
     results = validate_linear_regression(X_test_vec, y_test_vec, model)
 
     # Save outputs
-    model_path = MODEL_DIR / "baseline_taxi_duration_model.joblib"
-    save_model(model, model_path)
+    model_path = MODEL_DIR / "baseline_taxi_duration_model_and_vectorizer.joblib"
+    save_model_and_vectorizer((model, fitted_dict_vectorizer), model_path)
 
     results_path = RESULTS_DIR / "baseline_results.json"
     with open(results_path, "w") as f:
@@ -75,8 +75,8 @@ def main():
     logger.info(f"Model saved: {model_path}")
     logger.info(f"Results saved: {results_path}")
 
-    return model, results
+    return model, results, fitted_dict_vectorizer
 
 
 if __name__ == "__main__":
-    model, results = main()
+    model, results, fitted_dict_vectorizer = main()

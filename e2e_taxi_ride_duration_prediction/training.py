@@ -48,7 +48,7 @@ def dict_vectorize_features(
     train_lf: pl.LazyFrame,
     test_lf: pl.LazyFrame,
     features: list[str] | None = None,
-) -> tuple[csr_matrix, csr_matrix]:
+) -> tuple[csr_matrix, csr_matrix, DictVectorizer]:
     dict_vectorizer = DictVectorizer()
     if features:
         train_dicts = train_lf.select(features).collect().to_dicts()
@@ -60,7 +60,7 @@ def dict_vectorize_features(
     X_train = dict_vectorizer.fit_transform(train_dicts)
     X_test = dict_vectorizer.transform(test_dicts)
 
-    return X_train, X_test
+    return X_train, X_test, dict_vectorizer
 
 
 def vectorize_target(
@@ -104,6 +104,9 @@ def validate_linear_regression(
     return results
 
 
-def save_model(model: LinearRegression, save_path: str | Path | None):
+def save_model_and_vectorizer(
+    model: tuple[LinearRegression, DictVectorizer],
+    save_path: str | Path | None,
+):
     joblib.dump(model, save_path)
-    logger.info(f"saved model to {save_path}.")
+    logger.info(f"saved model and vectorizer to {save_path}.")
