@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# Secrets
+.env
+
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
 # Data

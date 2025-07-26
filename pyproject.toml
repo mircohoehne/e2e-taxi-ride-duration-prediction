@@ -5,19 +5,31 @@ description = "An end-to-end MLOps project showcasing a complete machine learnin
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "evidently>=0.7.11",
     "ipykernel>=6.29.5",
     "ipywidgets>=8.1.7",
-    "pandas>=2.3.1",
+    "joblib>=1.5.1",
+    "loguru>=0.7.3",
     "polars>=1.31.0",
-    "pyarrow>=20.0.0",
+    "pyarrow<=19.0.1",
     "requests>=2.32.4",
+    "scikit-learn>=1.7.1",
     "seaborn>=0.13.2",
     "tqdm>=4.67.1",
+    "xgboost>=3.0.2",
 ]
+
+[project.optional-dependencies]
+nvidia = [
+    "cuml-cu12==25.6.*",
+    "pandas>=2.0,<2.2.4",
+]
+profiling = []
 
 [dependency-groups]
 dev = [
     "gitlint>=0.19.1",
+    "jupyter>=1.1.1",
     "nbmake>=1.5.5",
     "pre-commit>=4.2.0",
     "pytest>=8.4.1",
@@ -31,3 +43,6 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-root= ""
 module-name = "e2e_taxi_ride_duration_prediction"
+
+[[tool.uv.index]]
+url = "https://pypi.nvidia.com/"
