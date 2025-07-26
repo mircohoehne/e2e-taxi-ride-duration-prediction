@@ -44,4 +44,4 @@ def predict_duration(request: TaxiRideRequest):
     X_test = dict_vectorizer.transform(X_dicts)
     prediction = model.predict(X_test)
 
-    return TaxiRidePrediction(predicted_duration=prediction)
+    return TaxiRidePrediction(predicted_duration=prediction[0])
