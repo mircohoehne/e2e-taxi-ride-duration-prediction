@@ -14,8 +14,14 @@ from e2e_taxi_ride_duration_prediction.preprocessing import (
 )
 
 
+@pytest.fixture()
+def string_cache():
+    with pl.StringCache():
+        yield
+
+
 @pytest.fixture
-def test_data():
+def test_data(string_cache):
     return pl.LazyFrame(
         {
             "VendorID": [1, 2, 1, 2, 1],
