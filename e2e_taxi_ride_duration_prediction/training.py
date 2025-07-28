@@ -1,8 +1,9 @@
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 
 import joblib
+import numpy as np
 import numpy.typing as npt
 import polars as pl
 from loguru import logger
@@ -48,7 +49,9 @@ def dict_vectorize_features(
     train_lf: pl.LazyFrame,
     test_lf: pl.LazyFrame,
     features: list[str] | None = None,
-) -> tuple[csr_matrix, csr_matrix, DictVectorizer]:
+) -> tuple[
+    Union[csr_matrix, np.ndarray], Union[csr_matrix, np.ndarray], DictVectorizer
+]:
     dict_vectorizer = DictVectorizer()
     if features:
         train_dicts = train_lf.select(features).collect().to_dicts()
