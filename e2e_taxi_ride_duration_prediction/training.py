@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import joblib
 import numpy.typing as npt
@@ -7,7 +8,6 @@ import polars as pl
 from loguru import logger
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction import DictVectorizer
-from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 
 pl.Config.set_engine_affinity("streaming")
@@ -73,26 +73,23 @@ def vectorize_target(
     return y_train, y_test
 
 
-def train_linear_regression(
+def train_model(
+    model: Any,
     X_train: csr_matrix,
     y_train: npt.NDArray,
-    parameters: dict | None = None,
-) -> LinearRegression:
-    # TODO: Add parameter validation for LinearRegression kwargs
-    if parameters:
-        linear_regression_model = LinearRegression(**parameters)
-    else:
-        linear_regression_model = LinearRegression()
-    linear_regression_model.fit(X_train, y_train)
-
-    return linear_regression_model
+) -> Any:
+    """Train sklearn-compatible model."""
+    logger.info(f"Training {type(model).__name__}")
+    model.fit(X_train, y_train)
+    return model
 
 
-def validate_linear_regression(
+def validate_model(
+    model: Any,
     X_test: csr_matrix,
     y_test: npt.NDArray,
-    model: LinearRegression,
 ) -> dict[str, float]:
+    """Validate sklearn-compatible model."""
     logger.info("Calculating predictions")
     y_pred = model.predict(X_test)
     results = {
@@ -105,8 +102,9 @@ def validate_linear_regression(
 
 
 def save_model_and_vectorizer(
-    model: tuple[LinearRegression, DictVectorizer],
+    model: tuple[Any, DictVectorizer],
     save_path: str | Path | None,
 ):
+    """Save any model and vectorizer pair."""
     joblib.dump(model, save_path)
     logger.info(f"saved model and vectorizer to {save_path}.")

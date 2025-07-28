@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 from loguru import logger
+from sklearn.linear_model import LinearRegression
 
 from e2e_taxi_ride_duration_prediction.ingestion import get_nyc_taxi_data
 from e2e_taxi_ride_duration_prediction.preprocessing import basic_preprocessing
@@ -12,8 +13,8 @@ from e2e_taxi_ride_duration_prediction.training import (
     dict_vectorize_features,
     save_model_and_vectorizer,
     time_series_train_test_split,
-    train_linear_regression,
-    validate_linear_regression,
+    train_model,
+    validate_model,
     vectorize_target,
 )
 
@@ -58,11 +59,11 @@ def main():
 
     # Training
     logger.info("Training model")
-    model = train_linear_regression(X_train_vec, y_train_vec)
+    model = train_model(LinearRegression(), X_train_vec, y_train_vec)
 
     # Evaluation
     logger.info("Evaluating model")
-    results = validate_linear_regression(X_test_vec, y_test_vec, model)
+    results = validate_model(model, X_test_vec, y_test_vec)
 
     # Save outputs
     model_path = MODEL_DIR / "baseline_taxi_duration_model_and_vectorizer.joblib"
