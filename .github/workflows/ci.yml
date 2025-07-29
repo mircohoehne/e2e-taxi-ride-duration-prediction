@@ -1,0 +1,30 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run linting
+        run: uv run ruff check . --extend-select=I
+
+      - name: Run Baseline Trainingloop
+        run: uv run scripts/train_model.py
+
+      - name: Run Tests
+        run: uv run pytest --verbose

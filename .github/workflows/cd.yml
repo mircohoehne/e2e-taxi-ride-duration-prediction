@@ -1,0 +1,38 @@
+name: Build & Publish Docker Image
+
+on:
+  workflow_dispatch:
+
+permissions:
+  packages: write
+  contents: read
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image tag
+        id: vars
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/taxi-api
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ steps.vars.outputs.image_name }}:latest \
+            -f e2e_taxi_ride_duration_prediction/serving/dockerfile .
+
+      - name: Push image to GHCR
+        run: |
+          docker push ${{ steps.vars.outputs.image_name }}:latest
