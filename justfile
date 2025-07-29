@@ -20,7 +20,7 @@ serve:
 
 # Build Docker image
 docker-build:
-    docker build -t taxi-ride-duration-prediction-api -f e2e_taxi_ride_duration_prediction/serving/dockerfile .
+    docker build -t taxi-ride-duration-prediction-api -f e2e_taxi_ride_duration_prediction/serving/dockerfile . --load
 
 # Run Docker container
 docker-run:
