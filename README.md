@@ -1,5 +1,5 @@
-![Status](<https://img.shields.io/badge/Status-Work_in_progress_(Level_1)-yellow>)
-![Tests](https://github.com/smircs/e2e-taxi-ride-duration-prediction/workflows/CI%20Pipeline/badge.svg)
+![Status](<https://img.shields.io/badge/Status-Work_in_progress_(Level_2)-yellow>)
+[![CI Pipeline](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml)
 
 An end-to-end MLOps project showcasing a complete machine learning pipeline using the NYC Taxi dataset. The goal is to predict taxi ride durations based on trip data and demonstrate modern MLOps practices, from data ingestion to model deployment and monitoring.
 
@@ -63,15 +63,20 @@ The development will be iterative and roughly follow the [Machine Learning opera
 
 > Note: The first development iteration begins at Level 1. Level 0 is described for context only and is not implemented in any way.
 
-## How to Run
-
-### Prerequisites
-
+## Quick Start
+### Docker / Podman
+```bash
+docker run --network=host ghcr.io/mircohoehne/taxi-api:latest
+```
+or
+```bash
+podman run --network=host ghcr.io/mircohoehne/taxi-api:latest
+```
+### Clone Repo and run locally
+Prerequisites:
 - Python 3.12+
 - [uv](https://docs.astral.sh/uv/) (Python package manager)
 - [just](https://github.com/casey/just) (command runner)
-
-### Quick Start
 
 ```bash
 # Clone the repository
@@ -83,8 +88,10 @@ just
 
 # Run a complete demo (setup + train + test + serve)
 just serve-fresh
-
-# Start sending requests. For example:
+```
+### Test API
+```bash
+# Example:
 curl -X POST "http://localhost:8000/predict" \
       -H "Content-Type: application/json" \
       -d '{
