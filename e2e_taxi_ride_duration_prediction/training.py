@@ -11,6 +11,8 @@ from scipy.sparse import csr_matrix
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 
+from e2e_taxi_ride_duration_prediction.models import SklearnCompatibleRegressor
+
 pl.Config.set_engine_affinity("streaming")
 
 
@@ -77,7 +79,7 @@ def vectorize_target(
 
 
 def train_model(
-    model: Any,
+    model: SklearnCompatibleRegressor,
     X_train: csr_matrix,
     y_train: npt.NDArray,
 ) -> Any:
@@ -88,7 +90,7 @@ def train_model(
 
 
 def validate_model(
-    model: Any,
+    model: SklearnCompatibleRegressor,
     X_test: csr_matrix,
     y_test: npt.NDArray,
 ) -> dict[str, float]:
@@ -105,7 +107,7 @@ def validate_model(
 
 
 def save_model_and_vectorizer(
-    model: tuple[Any, DictVectorizer],
+    model: tuple[SklearnCompatibleRegressor, DictVectorizer],
     save_path: str | Path | None,
 ):
     """Save any model and vectorizer pair."""
