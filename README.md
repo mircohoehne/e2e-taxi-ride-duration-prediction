@@ -64,16 +64,23 @@ The development will be iterative and roughly follow the [Machine Learning opera
 > Note: The first development iteration begins at Level 1. Level 0 is described for context only and is not implemented in any way.
 
 ## Quick Start
+
 ### Docker / Podman
+
 ```bash
 docker run --network=host ghcr.io/mircohoehne/taxi-api:latest
 ```
+
 or
+
 ```bash
 podman run --network=host ghcr.io/mircohoehne/taxi-api:latest
 ```
+
 ### Clone Repo and run locally
+
 Prerequisites:
+
 - Python 3.12+
 - [uv](https://docs.astral.sh/uv/) (Python package manager)
 - [just](https://github.com/casey/just) (command runner)
@@ -89,7 +96,9 @@ just
 # Run a complete demo (setup + train + test + serve)
 just serve-fresh
 ```
+
 ### Test API
+
 ```bash
 # Example:
 curl -X POST "http://localhost:8000/predict" \
@@ -106,8 +115,8 @@ curl -X POST "http://localhost:8000/predict" \
 ## Roadmap
 
 - [x] Level 1: DevOps, but no MLOps (Local)
-- [ ] Level 2: Automated Training (Switch to Cloud / emulate with LocalStack)
-- [ ] Level 3: Automated Model Deployment
+- [ ] Level 2: Automated Training
+- [ ] Level 3: Automated Model Deployment (Switch to Cloud / emulate with LocalStack)
 - [ ] Level 4: Full MLOps Automated Operations
 
 ## Other resources used to build and learn about MLOps:
