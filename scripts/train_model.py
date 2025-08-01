@@ -8,6 +8,7 @@ from loguru import logger
 from sklearn.linear_model import LinearRegression
 
 from e2e_taxi_ride_duration_prediction.ingestion import get_nyc_taxi_data
+from e2e_taxi_ride_duration_prediction.mlflow_utils import setup_mlflow
 from e2e_taxi_ride_duration_prediction.preprocessing import basic_preprocessing
 from e2e_taxi_ride_duration_prediction.training import (
     dict_vectorize_features,
@@ -29,6 +30,9 @@ def main():
 
     MODEL_DIR.mkdir(exist_ok=True)
     RESULTS_DIR.mkdir(exist_ok=True)
+
+    # Setup MLflow tracking URI and experiment
+    setup_mlflow()
 
     # Data ingestion
     logger.info("Loading NYC taxi data")
