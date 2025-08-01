@@ -80,7 +80,7 @@ def vectorize_target(
 
 def train_model(
     model: SklearnCompatibleRegressor,
-    X_train: csr_matrix,
+    X_train: Union[csr_matrix, np.ndarray],
     y_train: npt.NDArray,
 ) -> Any:
     """Train sklearn-compatible model."""
@@ -91,7 +91,7 @@ def train_model(
 
 def validate_model(
     model: SklearnCompatibleRegressor,
-    X_test: csr_matrix,
+    X_test: Union[csr_matrix, np.ndarray],
     y_test: npt.NDArray,
 ) -> dict[str, float]:
     """Validate sklearn-compatible model."""
