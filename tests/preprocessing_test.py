@@ -16,7 +16,7 @@ from e2e_taxi_ride_duration_prediction.preprocessing import (
 
 @pytest.fixture
 def test_date_range():
-    return pl.datetime(2025, 1, 1), pl.datetime(2025, 2, 1)
+    return datetime(2025, 1, 1), datetime(2025, 2, 1)
 
 
 def test_calculate_duration(test_data):

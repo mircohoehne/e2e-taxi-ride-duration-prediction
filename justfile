@@ -32,3 +32,15 @@ test:
 
 # Run setup, train model and serve the model
 serve-fresh: setup train serve
+
+# Start Prefect server
+start-prefect:
+    uv run prefect server start
+
+# Serve baseline model training flow with prefect
+serve-prefect:
+    uv run prefect flow serve scripts/train_model.py:main --name taxi-model-baseline-training
+
+# Start prefect workflow for baseline model training
+train-prefect:
+    uv run prefect deployment run 'main/taxi-model-baseline-training'

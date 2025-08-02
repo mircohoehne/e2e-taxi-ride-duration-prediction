@@ -1,8 +1,10 @@
 from datetime import datetime
 
 import polars as pl
+from prefect import flow, task
 
 
+@task
 def calculate_duration(lf: pl.LazyFrame) -> pl.LazyFrame:
     return lf.with_columns(
         (
@@ -14,6 +16,7 @@ def calculate_duration(lf: pl.LazyFrame) -> pl.LazyFrame:
     )
 
 
+@task
 def filter_by_date_range(
     lf: pl.LazyFrame, start: datetime, end: datetime
 ) -> pl.LazyFrame:
@@ -23,10 +26,12 @@ def filter_by_date_range(
     )
 
 
+@task
 def filter_valid_durations(lf: pl.LazyFrame) -> pl.LazyFrame:
     return lf.filter((pl.col("duration") > 0) & (pl.col("duration") <= 60))
 
 
+@task
 def cast_categorical_columns(
     lf: pl.LazyFrame,
     categorical_columns: list[str] = [
@@ -43,6 +48,7 @@ def cast_categorical_columns(
     )
 
 
+@task
 def create_pickup_dropoff_pairs(lf: pl.LazyFrame) -> pl.LazyFrame:
     return lf.with_columns(
         pl.concat_str([pl.col("PULocationID"), pl.col("DOLocationID")], separator="_")
@@ -51,6 +57,7 @@ def create_pickup_dropoff_pairs(lf: pl.LazyFrame) -> pl.LazyFrame:
     )
 
 
+@flow
 def basic_preprocessing(
     lf: pl.LazyFrame, start: datetime, end: datetime
 ) -> pl.LazyFrame:

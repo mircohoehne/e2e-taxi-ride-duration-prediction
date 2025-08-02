@@ -8,6 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import polars as pl
 from loguru import logger
+from prefect import task
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import (
@@ -22,6 +23,7 @@ from e2e_taxi_ride_duration_prediction.models import SklearnCompatibleRegressor
 pl.Config.set_engine_affinity("streaming")
 
 
+@task
 def time_series_train_test_split(
     lf: pl.LazyFrame,
     train_start: datetime,
@@ -53,6 +55,7 @@ def time_series_train_test_split(
     return X_train, X_test, y_train, y_test
 
 
+@task
 def dict_vectorize_features(
     train_lf: pl.LazyFrame,
     test_lf: pl.LazyFrame,
@@ -74,6 +77,7 @@ def dict_vectorize_features(
     return X_train, X_test, dict_vectorizer
 
 
+@task
 def vectorize_target(
     train_target_lf: pl.LazyFrame,
     test_target_lf: pl.LazyFrame,
@@ -84,6 +88,7 @@ def vectorize_target(
     return y_train, y_test
 
 
+@task
 def train_model(
     model: SklearnCompatibleRegressor,
     X_train: Union[csr_matrix, np.ndarray],
@@ -95,6 +100,7 @@ def train_model(
     return model
 
 
+@task
 def validate_model(
     model: SklearnCompatibleRegressor,
     X_test: Union[csr_matrix, np.ndarray],
@@ -124,6 +130,7 @@ def validate_model(
     return results
 
 
+@task
 def save_model_and_vectorizer(
     model: tuple[SklearnCompatibleRegressor, DictVectorizer],
     save_path: str | Path | None,

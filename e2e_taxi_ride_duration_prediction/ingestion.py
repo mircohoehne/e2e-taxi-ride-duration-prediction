@@ -5,9 +5,11 @@ from typing import List, Tuple
 import polars as pl
 import requests
 from loguru import logger
+from prefect import flow, task
 from tqdm.auto import tqdm
 
 
+@task
 def generate_year_month_tuples(
     start: Tuple[int, int], end: Tuple[int, int]
 ) -> List[Tuple[int, int]]:
@@ -31,6 +33,7 @@ def generate_year_month_tuples(
     ]
 
 
+@task
 def get_data_path(root: Path, start: Tuple[int, int], end: Tuple[int, int]) -> Path:
     """Get the path for combined parquet file.
 
@@ -48,6 +51,7 @@ def get_data_path(root: Path, start: Tuple[int, int], end: Tuple[int, int]) -> P
     )
 
 
+@task
 def download_parquet_file(
     url: str, filepath: Path, session: requests.Session | None = None
 ) -> bool:
@@ -79,6 +83,7 @@ def download_parquet_file(
         return False
 
 
+@task
 def concatenate_parquet_files(file_paths: List[Path], output_path: Path) -> None:
     """Concatenate multiple parquet files into a single file.
 
@@ -111,6 +116,7 @@ def concatenate_parquet_files(file_paths: List[Path], output_path: Path) -> None
     lf.sink_parquet(output_path.resolve(), engine="streaming")
 
 
+@flow
 def get_nyc_taxi_data(root: Path, start=(2022, 1), end=(2025, 5)):
     try:
         output_file = get_data_path(root, start, end)
