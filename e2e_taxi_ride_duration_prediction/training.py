@@ -3,13 +3,19 @@ from pathlib import Path
 from typing import Any, Union
 
 import joblib
+import mlflow
 import numpy as np
 import numpy.typing as npt
 import polars as pl
 from loguru import logger
 from scipy.sparse import csr_matrix
 from sklearn.feature_extraction import DictVectorizer
-from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
+from sklearn.metrics import (
+    mean_absolute_error,
+    mean_squared_error,
+    r2_score,
+    root_mean_squared_error,
+)
 
 from e2e_taxi_ride_duration_prediction.models import SklearnCompatibleRegressor
 
@@ -98,11 +104,23 @@ def validate_model(
     logger.info("Calculating predictions")
     y_pred = model.predict(X_test)
     results = {
-        "MAE": mean_absolute_error(y_test, y_pred),
-        "RMSE": root_mean_squared_error(y_test, y_pred),
-        "r2_score": r2_score(y_test, y_pred),
+        "test_mean_squared_error": mean_squared_error(y_test, y_pred),
+        "test_mean_absolute_error": mean_absolute_error(y_test, y_pred),
+        "test_r2_score": r2_score(y_test, y_pred),
+        "test_root_mean_squared_error": root_mean_squared_error(y_test, y_pred),
     }
     logger.info(f"Results: {results}")
+    try:
+        active_run = mlflow.active_run()
+        if active_run:
+            logger.info(f"Logging metrics to run: {active_run.info.run_id}")
+            mlflow.log_metrics(results)
+            logger.info("Successfully logged metrics to MLflow")
+        else:
+            logger.warning("No active MLflow run found")
+    except Exception as e:
+        logger.warning(f"Failed to log metrics to MLflow: {e}")
+
     return results
 
 

@@ -132,9 +132,12 @@ def test_validate_model():
     results = validate_model(mock_model, X_test, y_test)
 
     assert isinstance(results, dict)
-    assert "MAE" in results
-    assert "RMSE" in results
-    assert "r2_score" in results
+
+    assert "test_mean_squared_error" in results
+    assert "test_mean_absolute_error" in results
+    assert "test_r2_score" in results
+    assert "test_root_mean_squared_error" in results
+
     assert all(isinstance(v, float) for v in results.values())
     mock_model.predict.assert_called_once_with(X_test)
 
