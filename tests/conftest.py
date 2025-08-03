@@ -4,6 +4,7 @@ import polars as pl
 import pytest
 from _pytest.logging import LogCaptureFixture
 from loguru import logger
+from prefect.testing.utilities import prefect_test_harness
 
 
 @pytest.fixture()
@@ -40,6 +41,12 @@ def test_data(string_cache) -> pl.LazyFrame:
             "fare_amount": [12.5, 18.0, 15.5, 25.0, 8.5],
         }
     )
+
+
+@pytest.fixture(autouse=True, scope="session")
+def prefect_test_fixture():
+    with prefect_test_harness():
+        yield
 
 
 @pytest.fixture
