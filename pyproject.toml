@@ -23,10 +23,6 @@ dependencies = [
   "xgboost>=3.0.2",
 ]
 
-[project.optional-dependencies]
-nvidia = ["cuml-cu12==25.6.*", "pandas>=2.0,<2.2.4"]
-profiling = []
-
 [dependency-groups]
 dev = [
   "gitlint>=0.19.1",
