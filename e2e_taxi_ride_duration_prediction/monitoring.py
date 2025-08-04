@@ -3,6 +3,7 @@ from pathlib import Path
 import joblib
 import polars as pl
 from evidently import DataDefinition, Dataset, Regression, Report
+from evidently.core.report import Snapshot
 from evidently.presets import DataDriftPreset, RegressionPreset
 from prefect import task
 
@@ -39,7 +40,7 @@ def generate_monitoring_report(
     data_drift: bool = True,
     regression: bool = True,
     include_tests: bool = True,
-) -> Report:
+) -> Snapshot:
     """
     Generate a monitoring report comparing reference and current data.
 
@@ -97,4 +98,4 @@ def generate_monitoring_report(
 
     run.save_html(report_path)
 
-    return report
+    return run
