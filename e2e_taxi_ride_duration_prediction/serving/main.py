@@ -5,8 +5,6 @@ import polars as pl
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from e2e_taxi_ride_duration_prediction.preprocessing import create_pickup_dropoff_pairs
-
 pl.Config.set_engine_affinity("streaming")
 
 app = FastAPI()
@@ -24,14 +22,12 @@ class TaxiRidePrediction(BaseModel):
 
 @app.post("/predict")
 def predict_duration(request: TaxiRideRequest):
-    lf = create_pickup_dropoff_pairs(
-        pl.LazyFrame(
-            {
-                "PULocationID": [request.PULocationID],
-                "DOLocationID": [request.DOLocationID],
-                "trip_distance": [request.trip_distance],
-            }
-        )
+    lf = pl.LazyFrame(
+        {
+            "PULocationID": [request.PULocationID],
+            "DOLocationID": [request.DOLocationID],
+            "trip_distance": [request.trip_distance],
+        }
     )
 
     root = Path(__file__).parents[2]
