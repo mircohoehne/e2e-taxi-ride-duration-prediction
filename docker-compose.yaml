@@ -1,0 +1,32 @@
+# ---------------------------------------------------------
+# Note for SELinux users (Some distros like Fedora, CentOS, RHEL enable it by default):
+# `:Z` is required to work with SELinux systems to allow container write access to bind-mounted paths.
+# Caution! Only bind **subdirectories** with this flag.
+# If you bind mount /home or /usr with this option you might render your host machine inoperable and need to fix it manually.
+# More info: https://docs.docker.com/engine/storage/bind-mounts/#configure-the-selinux-label
+# ---------------------------------------------------------
+
+services:
+  mlflow:
+    depends_on:
+      - localstack
+    image: ghcr.io/mlflow/mlflow:v3.1.4
+    ports:
+      - 5000:5000
+    volumes:
+      - ./mlruns:/mlruns:Z
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:////mlruns/mlflow.db
+      --default-artifact-root /mlruns
+      --host 0.0.0.0
+  prefect:
+    image: prefecthq/prefect:3-latest
+    ports:
+      - 4200:4200
+    volumes:
+      - ./e2e_taxi_ride_duration_prediction:/e2e_taxi_ride_duration_prediction:Z
+    working_dir: /e2e_taxi_ride_duration_prediction
+    command: >
+      prefect server start
+      --host 0.0.0.0
