@@ -3,6 +3,10 @@
 
 An end-to-end MLOps project showcasing a complete machine learning pipeline using the NYC Taxi dataset. The goal is to predict taxi ride durations based on trip data and demonstrate modern MLOps practices, from data ingestion to model deployment and monitoring.
 
+## MLOps Zoomcamp Reviewer
+
+If you are a reviewer for the MLOps Zoomcamp, I tried to make your life easier by providing a [demo notebook](notebooks/00_demo.ipynb).
+
 ## Project Overview
 
 This repository will implement a production-grade ML system with the following key features:
