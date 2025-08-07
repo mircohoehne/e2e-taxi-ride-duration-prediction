@@ -27,4 +27,9 @@ jobs:
         run: uv run scripts/train_model.py
 
       - name: Run Tests
-        run: uv run pytest --verbose
+        run: uv run pytest --verbose --cov=e2e_taxi_ride_duration_prediction --cov-branch --cov-report=xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
