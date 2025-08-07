@@ -54,7 +54,7 @@ def generate_monitoring_report(
         regression (bool): Include regression preset.
 
     Returns:
-        Report: The generated monitoring report.
+        Snapshot: The generated monitoring report snapshot.
     """
     if data_drift and regression:
         metrics = [DataDriftPreset(), RegressionPreset()]
