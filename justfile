@@ -46,5 +46,9 @@ train-prefect:
     uv run prefect deployment run 'main/taxi-model-baseline-training'
 
 # Report modules missing tests with line numbers
-missing-tests:
-    uv run pytest --cov-report term-missing:skip-covered --cov=e2e_taxi_ride_duration_prediction
+test-miss:
+    uv run pytest --cov-report term-missing:skip-covered --cov=e2e_taxi_ride_duration_prediction --cov-branch
+
+# Report test coverage
+test-cov:
+    uv run pytest --cov=e2e_taxi_ride_duration_prediction --cov-branch
