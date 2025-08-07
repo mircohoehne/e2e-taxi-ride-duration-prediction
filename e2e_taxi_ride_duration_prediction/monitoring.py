@@ -12,6 +12,7 @@ from e2e_taxi_ride_duration_prediction.preprocessing import calculate_duration
 pl.Config.set_engine_affinity("streaming")
 
 
+@task
 def add_predictions_to_data(
     data: pl.LazyFrame,
     model_path: str | Path,
