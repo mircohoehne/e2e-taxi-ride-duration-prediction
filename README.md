@@ -1,5 +1,6 @@
 ![Status](<https://img.shields.io/badge/Status-Work_in_progress_(Level_2)-yellow>)
 [![CI Pipeline](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/github/mircohoehne/e2e-taxi-ride-duration-prediction/graph/badge.svg?token=A4INWVJQDR)](https://codecov.io/github/mircohoehne/e2e-taxi-ride-duration-prediction)
 
 An end-to-end MLOps project showcasing a complete machine learning pipeline using the NYC Taxi dataset. The goal is to predict taxi ride durations based on trip data and demonstrate modern MLOps practices, from data ingestion to model deployment and monitoring.
 
