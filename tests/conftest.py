@@ -44,6 +44,8 @@ def test_data(string_cache: Generator[None, None, None]) -> pl.LazyFrame:
     )
 
 
+# Tradeoff: One db resulting in faster tests, but possible state leakage.
+# When full isolation is needed call the fixture again to create fresh db.
 @pytest.fixture(autouse=True, scope="session")
 def prefect_test_fixture() -> Generator[None, None, None]:
     with prefect_test_harness():
