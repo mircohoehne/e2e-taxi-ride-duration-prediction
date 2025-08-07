@@ -86,7 +86,6 @@ podman run --network=host ghcr.io/mircohoehne/taxi-api:latest
 
 Prerequisites:
 
-- Python 3.12+
 - [uv](https://docs.astral.sh/uv/) (Python package manager)
 - [just](https://github.com/casey/just) (command runner)
 
