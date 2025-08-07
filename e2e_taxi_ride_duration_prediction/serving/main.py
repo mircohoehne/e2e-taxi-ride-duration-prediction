@@ -21,7 +21,7 @@ class TaxiRidePrediction(BaseModel):
 
 
 @app.post("/predict")
-def predict_duration(request: TaxiRideRequest):
+def predict_duration(request: TaxiRideRequest) -> TaxiRidePrediction:
     lf = pl.LazyFrame(
         {
             "PULocationID": [request.PULocationID],

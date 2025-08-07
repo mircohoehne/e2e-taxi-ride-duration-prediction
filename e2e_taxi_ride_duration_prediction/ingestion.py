@@ -117,7 +117,11 @@ def concatenate_parquet_files(file_paths: List[Path], output_path: Path) -> None
 
 
 @flow
-def get_nyc_taxi_data(root: Path | None = None, start=(2022, 1), end=(2025, 5)):
+def get_nyc_taxi_data(
+    root: Path | None = None,
+    start: Tuple[int, int] = (2022, 1),
+    end: Tuple[int, int] = (2025, 5),
+) -> pl.LazyFrame:
     if not root:
         root = Path(__file__).parents[1]
     try:

@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Union
+from typing import Union
 
 import joblib
 import mlflow
@@ -93,7 +93,7 @@ def train_model(
     model: SklearnCompatibleRegressor,
     X_train: Union[csr_matrix, np.ndarray],
     y_train: npt.NDArray,
-) -> Any:
+) -> SklearnCompatibleRegressor:
     """Train sklearn-compatible model."""
     logger.info(f"Training {type(model).__name__}")
     model.fit(X_train, y_train)
@@ -134,7 +134,7 @@ def validate_model(
 def save_model_and_vectorizer(
     model: tuple[SklearnCompatibleRegressor, DictVectorizer],
     save_path: str | Path | None,
-):
+) -> None:
     """Save any model and vectorizer pair."""
     joblib.dump(model, save_path)
     logger.info(f"saved model and vectorizer to {save_path}.")

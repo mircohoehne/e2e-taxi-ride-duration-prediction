@@ -22,7 +22,9 @@ from e2e_taxi_ride_duration_prediction.training import (
 
 
 @pytest.fixture
-def test_data_with_target(test_data, test_target_data) -> pl.LazyFrame:
+def test_data_with_target(
+    test_data: pl.LazyFrame, test_target_data: pl.LazyFrame
+) -> pl.LazyFrame:
     return pl.concat([test_data, test_target_data], how="horizontal").lazy()
 
 

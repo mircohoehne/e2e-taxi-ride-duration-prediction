@@ -1,3 +1,4 @@
+from collections.abc import Generator
 from datetime import datetime
 
 import polars as pl
@@ -8,13 +9,13 @@ from prefect.testing.utilities import prefect_test_harness
 
 
 @pytest.fixture()
-def string_cache():
+def string_cache() -> Generator[None, None, None]:
     with pl.StringCache():
         yield
 
 
 @pytest.fixture
-def test_data(string_cache) -> pl.LazyFrame:
+def test_data(string_cache: Generator[None, None, None]) -> pl.LazyFrame:
     return pl.LazyFrame(
         {
             "VendorID": [1, 2, 1, 2, 1],
@@ -44,18 +45,18 @@ def test_data(string_cache) -> pl.LazyFrame:
 
 
 @pytest.fixture(autouse=True, scope="session")
-def prefect_test_fixture():
+def prefect_test_fixture() -> Generator[None, None, None]:
     with prefect_test_harness():
         yield
 
 
 @pytest.fixture
-def test_target_data():
+def test_target_data() -> pl.LazyFrame:
     return pl.LazyFrame({"duration": [15, 30, 45, 75, -10]})
 
 
 @pytest.fixture
-def caplog(caplog: LogCaptureFixture):
+def caplog(caplog: LogCaptureFixture) -> Generator[LogCaptureFixture, None, None]:
     """Make loguru work with pytest. Source: https://loguru.readthedocs.io/en/stable/resources/migration.html#replacing-caplog-fixture-from-pytest-library"""
     handler_id = logger.add(
         caplog.handler,

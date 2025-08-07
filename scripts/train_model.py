@@ -35,7 +35,7 @@ def main(
     test_start_month: int = 2,
     test_end_year: int = 2025,
     test_end_month: int = 3,
-):
+) -> None:
     """Run the complete ML training pipeline with configurable parameters."""
     ROOT_DIR = Path(__file__).parent.parent
     MODEL_DIR = ROOT_DIR / "models"
