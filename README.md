@@ -1,129 +1,59 @@
+# NYC-Taxi End-to-End MLOps Demo
+
 ![Status](<https://img.shields.io/badge/Status-Work_in_progress_(Level_2)-yellow>)
 [![CI Pipeline](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/mircohoehne/e2e-taxi-ride-duration-prediction/graph/badge.svg?token=A4INWVJQDR)](https://codecov.io/github/mircohoehne/e2e-taxi-ride-duration-prediction)
 
-An end-to-end MLOps project showcasing a complete machine learning pipeline using the NYC Taxi dataset. The goal is to predict taxi ride durations based on trip data and demonstrate modern MLOps practices, from data ingestion to model deployment and monitoring.
+> **TL;DR**: End-to-end MLOps project that ingests NYC taxi data, preprocesses with Polars, trains a baseline model, tracks runs in MLflow, serves predictions with FastAPI, and generates an Evidently drift report. CI that runs lint, formatting, checks for secrets, big files and runs tests. Manual CD trigger that uploads the containerized model to GitHub Container Registry. The project is built with a focus on MLOps practices, from data ingestion to model deployment and monitoring. Modeling is not the focus of this project, but rather the MLOps practices and infrastructure, therefore the model is very basic, which may change in the future.
 
-## MLOps Zoomcamp Reviewer
+<!-- TODO: insert gif/loom here -->
 
-If you are a reviewer for the MLOps Zoomcamp, I tried to make your life easier by providing a [demo notebook](notebooks/00_demo.ipynb).
+## Key features
 
-## Project Overview
+| Feature                | Description                                                                                                         |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| End to end pipeline    | Ingestion, preprocessing, training, all modular and available as Prefect tasks and flows for easy orchestration     |
+| Experiment tracking    | MLflow tracking with autolog and extended where autolog wasn't sufficient                                           |
+| Serving                | FastAPI app with '/predict' endpoint, Pydantic validation, containerized, swagger at '/docs'                        |
+| Jusfile                | For easy command runs and smooth DX, run `just` in root directory to see all commands                               |
+| Tests and typing       | Typed Python, pytest across all modules, coverage reported in CI                                                    |
+| CI                     | GitHub Actions that run linting, tests and report code coverage with Codecov                                        |
+| CD (containerized API) | Manually triggered GitHub Action that containerizes the API and publishes it to ghcr.io/mircohoehne/taxi-api:latest |
+| Monitoring             | Evidently script, that produces an HTML Drift- and Regression-Metric-Report                                         |
+| IaC demo               | Terraform script that spins up an EC2 instance and exposes the containerized api endpoint                           |
 
-This repository will implement a production-grade ML system with the following key features:
-
-- Monthly data ingestion (Prefect)
-- Data storage and versioning (DVC, later S3/DB)
-- Feature engineering and preprocessing (polars, scikit-learn)
-- Model training and evaluation (scikit-learn, XGBoost)
-- Model registry integration (MLFlow)
-- CI/CD pipelines for automation (Github Actions)
-- Monitoring, alerting, and automatic retraining (Evidently, Prefect)
-- Infrastructure-as-Code (IaC) (Terraform, AWS)
-
-### Already implemented
-
-- **Data ingestion pipeline** (`e2e_taxi_ride_duration_prediction/ingestion.py`)
-  - NYC taxi data download and processing with Polars
-  - Memory-efficient streaming processing for large datasets
-  - Automatic data caching as parquet files
-
-- **Data preprocessing** (`e2e_taxi_ride_duration_prediction/preprocessing.py`)
-  - Feature engineering for pickup/dropoff locations
-  - Categorical encoding and data validation
-  - Duration calculation from timestamps
-
-- **Model training** (`e2e_taxi_ride_duration_prediction/training.py`)
-  - Baseline LinearRegression model implementation
-  - Model serialization with joblib
-  - Training metrics logging and evaluation
-
-- **Model serving** (`e2e_taxi_ride_duration_prediction/serving/`)
-  - FastAPI REST API for model predictions
-  - Docker containerization for deployment
-  - GitHub Container Registry integration
-
-- **Development workflow**
-  - Just commands for common tasks (`justfile`)
-  - Comprehensive test suite with pytest
-  - Code quality tools (ruff formatting/linting)
-  - Pre-commit hooks for consistency
-
-- **CI/CD pipeline**
-  - GitHub Actions for automated testing
-  - Docker image building and publishing
-  - Code quality checks on pull requests and pushes on main branch
-
-## Approach
-
-The development will be iterative and roughly follow the [Machine Learning operations maturity model by Microsoft](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/mlops-maturity-model) which defines the following levels (Table from the linked site):
-
-| Level | Description                     | Highlights                                                                                                                                                                                                               | Technology                                                                                                                                                             |
-| ----- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0     | No MLOps                        | - Difficult to manage full machine learning model lifecycle<br> - The teams are disparate and releases are painful<br> - Most systems exist as "black boxes," little feedback during/post deployment<br>                 | - Manual builds and deployments<br> - Manual testing of model and application<br> - No centralized tracking of model performance<br> - Training of model is manual<br> |
-| 1     | DevOps but no MLOps             | - Releases are less painful than No MLOps, but rely on Data Team for every new model<br> - Still limited feedback on how well a model performs in production<br> - Difficult to trace/reproduce results<br>              | - Automated builds<br> - Automated tests for application code<br>                                                                                                      |
-| 2     | Automated Training              | - Training environment is fully managed and traceable<br> - Easy to reproduce model<br> - Releases are manual, but low friction<br>                                                                                      | - Automated model training - Centralized tracking of model training performance<br> - Model management<br>                                                             |
-| 3     | Automated Model Deployment      | - Releases are low friction and automatic<br> - Full traceability from deployment back to original data<br> - Entire environment managed: train > test > production<br>                                                  | - Integrated A/B testing of model performance for deployment<br> - Automated tests for all code<br> - Centralized tracking of model training performance<br>           |
-| 4     | Full MLOps Automated Operations | - Full system automated and easily monitored<br> - Production systems are providing information on how to improve and, in some cases, automatically improve with new models<br> - Approaching a zero-downtime system<br> | - Automated model training and testing<br> - Verbose, centralized metrics from deployed model<br>                                                                      |
-
-> Note: The first development iteration begins at Level 1. Level 0 is described for context only and is not implemented in any way.
+## Architecture
 
 ## Quick Start
 
-### Docker / Podman
-
-```bash
-docker run --network=host ghcr.io/mircohoehne/taxi-api:latest
-```
-
-or
-
-```bash
-podman run --network=host ghcr.io/mircohoehne/taxi-api:latest
-```
-
-### Clone Repo and run locally
-
 Prerequisites:
 
-- [uv](https://docs.astral.sh/uv/) (Python package manager)
-- [just](https://github.com/casey/just) (command runner)
+- uv
+- just (optional, you can look at the `justfile` and run the commands manually)
 
-```bash
-# Clone the repository
-git clone https://github.com/smircs/e2e-taxi-ride-duration-prediction.git
-cd e2e-taxi-ride-duration-prediction
+To see available just commands, run `just` in the root directory
 
-# See all available commands
-just
+### Run published Container
 
-# Run a complete demo (setup + train + test + serve)
-just serve-fresh
-```
+### Local (Docker)
 
-### Test API
+### Cloud (AWS)
 
-```bash
-# Example:
-curl -X POST "http://localhost:8000/predict" \
-      -H "Content-Type: application/json" \
-      -d '{
-    "PULocationID": 161,
-    "DOLocationID": 236,
-    "trip_distance": 2.5
-  }'
+## Project layout
 
+## Reproducing Experiments
 
-```
+## Monitoring drift and performance
 
-## Roadmap
+## What would be next steps?
 
-- [x] Level 1: DevOps, but no MLOps (Local)
-- [ ] Level 2: Automated Training
-- [ ] Level 3: Automated Model Deployment (Switch to Cloud / emulate with LocalStack)
-- [ ] Level 4: Full MLOps Automated Operations
+- make container slimmer
+- add mypy type enforcement
+- change mlflow sqlite to a more robust database like Postgres
+- create s3 Bucket for data / mlflow artifacts
 
-## Other resources used to build and learn about MLOps:
+## Learnings / Future Improvements
 
-[mlops-zoomcamp - DataTalksClub](https://github.com/DataTalksClub/mlops-zoomcamp)<br>
-[Designing Machine Learning Systems - Chip Huyen](https://bookgoodies.com/a/1098107969)
+### Container size
+
+Currently, the serving image installs all base dependencies, including libraries like MLflow. In future projects I would structure the project in different dependency groups from the beginning, keeping only the libraries necessary for the serving in the base dependency group and extend them for training, development, etc.
