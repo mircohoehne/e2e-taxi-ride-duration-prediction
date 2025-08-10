@@ -21,11 +21,12 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Run formatting
+        run: uv run ruff format --check --diff
+
       - name: Run linting
         run: uv run ruff check . --extend-select=I
 
-      - name: Run formatting
-        run: uv run ruff format
 
       - name: Run Typechecks
         run: uv run ty check
