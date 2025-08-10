@@ -5,9 +5,6 @@
 
 > **TL;DR**: End-to-end MLOps project that ingests NYC taxi data, preprocesses with Polars, trains a baseline model, tracks runs in MLflow, serves predictions with FastAPI, and generates an Evidently drift report. CI that runs lint, formatting, checks for secrets, big files and runs tests. Manual CD trigger that uploads the containerized model to GitHub Container Registry. The project is built with a focus on MLOps practices, from data ingestion to model deployment and monitoring. Modeling is not the focus of this project, but rather the MLOps practices and engineering side of things, therefore the model is very basic, which may change in the future.
 
-<!-- TODO: insert gif/loom here? -->
-<!-- TODO: Also move TL;DR to about section? -->
-
 ## Key features
 
 | Feature                | Description                                                                                                         |
@@ -63,8 +60,6 @@ just serve-fresh
 
 This will download the data, preprocess it, train the baseline model, and start an FastAPI server on port 8000.
 Then you can test the API with the same command as above.
-
-<!--TODO: add instructions-->
 
 ### Cloud (AWS)
 
@@ -149,7 +144,7 @@ To setup local model tracking with mlflow, just import the setup function from `
 
 ## Data / Model Monitoring
 
-For a demonstration of the monitoring you can refer to the following notebook: [02_monitoring.ipynb](notebooks/02_monitoring.ipynb).
+For a demonstration of the monitoring you can refer to the following notebook: [02_monitoring.ipynb](notebooks/02_monitoring.ipynb), which also includes a sample report.
 Alternatively Monitoring can be deployed as a Prefect task and run on a schedule.
 
 ## Orchestration with Prefect
