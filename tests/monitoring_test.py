@@ -84,5 +84,5 @@ def test_generate_monitoring_report():
                 model_path="dummy_model.pkl",
             )
 
-            assert result == mock_run
+            assert result is mock_run
             mock_run.save_html.assert_called_once_with(report_path)
