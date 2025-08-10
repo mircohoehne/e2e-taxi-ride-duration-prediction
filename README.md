@@ -14,10 +14,12 @@
 | Serving                | FastAPI app with '/predict' endpoint, Pydantic validation, containerized, swagger at '/docs'                        |
 | Jusfile                | For easy command runs and smooth DX, run `just` in root directory to see all commands                               |
 | Tests and typing       | Typed Python, pytest across all modules, coverage reported in CI                                                    |
-| CI                     | GitHub Actions that run linting, tests and report code coverage with Codecov                                        |
+| CI                     | GitHub Actions that run linting, tests, typechecker[^1] and report code coverage with Codecov                       |
 | CD (containerized API) | Manually triggered GitHub Action that containerizes the API and publishes it to ghcr.io/mircohoehne/taxi-api:latest |
 | Monitoring             | Evidently script, that produces an HTML Drift- and Regression-Metric-Report                                         |
 | IaC demo               | Terraform script that spins up an EC2 instance and exposes the containerized api endpoint                           | Pre-commit-hooks | Hooks for formatting, linting, testing, secret detection, enforced conventional commits and more |
+
+[^1]: Typchecking is done with [ty](https://docs.astral.sh/ty/) (a fast Typechecker written in Rust) which only has a pre-release version. In Production I would use a robust typechecker like `mypy`.
 
 ## Quick Start
 

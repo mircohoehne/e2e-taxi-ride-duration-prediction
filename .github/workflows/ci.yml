@@ -24,6 +24,12 @@ jobs:
       - name: Run linting
         run: uv run ruff check . --extend-select=I
 
+      - name: Run formatting
+        run: uv run ruff format
+
+      - name: Run Typechecks
+        run: uv run ty check
+
       - name: Run Baseline Trainingloop
         run: uv run scripts/train_model.py
 
