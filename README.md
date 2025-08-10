@@ -8,16 +8,17 @@
 ## Key features
 
 | Feature                | Description                                                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------ |
-| End to end pipeline    | Ingestion, preprocessing, training, all modular and available as Prefect tasks and flows for easy orchestration     |
-| Experiment tracking    | MLflow tracking with autolog and extended where autolog wasn't sufficient                                           |
-| Serving                | FastAPI app with '/predict' endpoint, Pydantic validation, containerized, swagger at '/docs'                        |
-| Jusfile                | For easy command runs and smooth DX, run `just` in root directory to see all commands                               |
-| Tests and typing       | Typed Python, pytest across all modules, coverage reported in CI                                                    |
-| CI                     | GitHub Actions that run linting, tests, typechecker[^1] and report code coverage with Codecov                       |
-| CD (containerized API) | Manually triggered GitHub Action that containerizes the API and publishes it to ghcr.io/mircohoehne/taxi-api:latest |
-| Monitoring             | Evidently script, that produces an HTML Drift- and Regression-Metric-Report                                         |
-| IaC demo               | Terraform script that spins up an EC2 instance and exposes the containerized api endpoint                           | Pre-commit-hooks | Hooks for formatting, linting, testing, secret detection, enforced conventional commits and more |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| End-to-end pipeline    | Ingestion, preprocessing, training; modularized as Prefect tasks/flows for easy orchestration                       |
+| Experiment tracking    | MLflow tracking with autolog; extended where autolog wasn't sufficient                                              |
+| Serving                | FastAPI app with '/predict' endpoint, Pydantic validation, containerized; Swagger at '/docs'                        |
+| Justfile               | For easy command runs and smooth DX; run `just` in the repo root to see all commands                                |
+| Tests and typing       | Typed Python; pytest across modules; coverage reported in CI                                                        |
+| CI                     | GitHub Actions: linting, tests, type checker[^1], and Codecov coverage                                              |
+| CD (containerized API) | Manually-triggered GitHub Action publishes ghcr.io/mircohoehne/taxi-api:latest                                      |
+| Monitoring             | Evidently script producing HTML drift and regression metric reports                                                 |
+| Pre-commit hooks       | Formatting, linting, testing, secret detection, conventional commits, and more                                      |
+| IaC demo               | Terraform spins up an EC2 instance and exposes the containerized API endpoint                                       |
 
 [^1]: Typchecking is done with [ty](https://docs.astral.sh/ty/) (a fast Typechecker written in Rust) which only has a pre-release version. In Production I would use a robust typechecker like `mypy`.
 
@@ -33,11 +34,9 @@ To see available just commands, run `just` in the root directory
 ### Run published Container
 
 You don't need to clone the repo. Just run
-
 ```bash
-docker run --network=host ghcr.io/mircohoehne/taxi-api:latest
+docker run -p 8000:8000 ghcr.io/mircohoehne/taxi-api:latest
 ```
-
 and hit the API at `http://localhost:8000/predict` with a POST request containing the required JSON payload.
 For example:
 
