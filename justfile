@@ -22,16 +22,16 @@ serve:
 serve-fresh: setup train serve
 
 # Serve baseline model training flow with prefect
-serve-prefect:
+serve-prefect: start-prefect
     uv run prefect flow serve scripts/train_model.py:main --name taxi-model-baseline-training
 
 # Setup without dev dependencies
 setup:
     uv sync --no-dev
 
-# Start Prefect server
+# Start Prefect server in background and set prefect config to API URL
 start-prefect:
-    uv run prefect server start
+    uv run prefect server start -b && prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
 
 # Start mlflow server
 mlflow:
