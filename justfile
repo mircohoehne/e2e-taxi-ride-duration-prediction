@@ -31,12 +31,11 @@ setup:
 
 # Start Prefect server in background and set prefect config to API URL
 start-prefect:
-    uv run prefect server start -b && prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
+    uv run prefect server start -b && uv run prefect config set PREFECT_API_URL=http://127.0.0.1:4200/api
 
 # Start mlflow server
 mlflow:
-    mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db --default-artifact-root /mlruns --host 0.0.0.0
-
+    uv run mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db --default-artifact-root mlruns --host 0.0.0.0
 # Run pytest
 test:
     uv run pytest
