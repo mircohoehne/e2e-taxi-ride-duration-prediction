@@ -14,13 +14,15 @@ wheels/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
+
 # Data
-data/
+data/*.parquet
 *.parquet
 results
 models
 logs
 mlruns
+reports/*.html
 
 # Terraform
 .terraform/
