@@ -1,6 +1,6 @@
 # NYC-Taxi End-to-End MLOps Demo
 
-[![CI Pipeline](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/mircohoehne/e2e-taxi-ride-duration-prediction/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/github/mircohoehne/e2e-taxi-ride-duration-prediction/graph/badge.svg?token=A4INWVJQDR)](https://codecov.io/github/mircohoehne/e2e-taxi-ride-duration-prediction)
 
 > **TL;DR**: End-to-end MLOps project that ingests NYC taxi data, preprocesses with Polars, trains a baseline model, tracks runs in MLflow, serves predictions with FastAPI, and generates an Evidently drift report. CI that runs lint, formatting, checks for secrets, big files and runs tests. Manual CD trigger that uploads the containerized model to GitHub Container Registry. The project is built with a focus on MLOps practices, from data ingestion to model deployment and monitoring. Modeling is not the focus of this project, but rather the MLOps practices and engineering side of things, therefore the model is very basic, which may change in the future.
