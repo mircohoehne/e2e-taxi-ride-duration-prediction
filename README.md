@@ -7,18 +7,18 @@
 
 ## Key features
 
-| Feature                | Description                                                                                                         |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| End-to-end pipeline    | Ingestion, preprocessing, training; modularized as Prefect tasks/flows for easy orchestration                       |
-| Experiment tracking    | MLflow tracking with autolog; extended where autolog wasn't sufficient                                              |
-| Serving                | FastAPI app with '/predict' endpoint, Pydantic validation, containerized; Swagger at '/docs'                        |
-| Justfile               | For easy command runs and smooth DX; run `just` in the repo root to see all commands                                |
-| Tests and typing       | Typed Python; pytest across modules; coverage reported in CI                                                        |
-| CI                     | GitHub Actions: linting, tests, type checker[^1], and Codecov coverage                                              |
-| CD (containerized API) | Manually-triggered GitHub Action publishes ghcr.io/mircohoehne/taxi-api:latest                                      |
-| Monitoring             | Evidently script producing HTML drift and regression metric reports                                                 |
-| Pre-commit hooks       | Formatting, linting, testing, secret detection, conventional commits, and more                                      |
-| IaC demo               | Terraform spins up an EC2 instance and exposes the containerized API endpoint                                       |
+| Feature                | Description                                                                                   |
+| ---------------------- | --------------------------------------------------------------------------------------------- |
+| End-to-end pipeline    | Ingestion, preprocessing, training; modularized as Prefect tasks/flows for easy orchestration |
+| Experiment tracking    | MLflow tracking with autolog; extended where autolog wasn't sufficient                        |
+| Serving                | FastAPI app with '/predict' endpoint, Pydantic validation, containerized; Swagger at '/docs'  |
+| Justfile               | For easy command runs and smooth DX; run `just` in the repo root to see all commands          |
+| Tests and typing       | Typed Python; pytest across modules; coverage reported in CI                                  |
+| CI                     | GitHub Actions: linting, tests, type checker[^1], and Codecov coverage                        |
+| CD (containerized API) | Manually-triggered GitHub Action publishes ghcr.io/mircohoehne/taxi-api:latest                |
+| Monitoring             | Evidently script producing HTML drift and regression metric reports                           |
+| Pre-commit hooks       | Formatting, linting, testing, secret detection, conventional commits, and more                |
+| IaC demo               | Terraform spins up an EC2 instance and exposes the containerized API endpoint                 |
 
 [^1]: Typchecking is done with [ty](https://docs.astral.sh/ty/) (a fast Typechecker written in Rust) which only has a pre-release version. In Production I would use a robust typechecker like `mypy`.
 
@@ -34,9 +34,11 @@ To see available just commands, run `just` in the root directory
 ### Run published Container
 
 You don't need to clone the repo. Just run
+
 ```bash
 docker run -p 8000:8000 ghcr.io/mircohoehne/taxi-api:latest
 ```
+
 and hit the API at `http://localhost:8000/predict` with a POST request containing the required JSON payload.
 For example:
 
@@ -155,17 +157,11 @@ Alternatively Monitoring can be deployed as a Prefect task and run on a schedule
 3. Serve the flow you want to execute, for example `uv run prefect flow serve scripts/train_model.py:main --name taxi-model-baseline-training` for the main function of the train_model.py script.
 4. Run the flow with
 
-## Learnings / Future Improvements
+## Future Improvements
 
-### Container size
-
-Currently, the serving image installs all base dependencies, including libraries like MLflow. In future projects I would structure the project in different dependency groups from the beginning, keeping only the libraries necessary for the serving in the base dependency group and extend them for training, development, etc.
-
-#### What would be next steps?
-
-- make container slimmer
-- add mypy type enforcement
-- change mlflow sqlite to a more robust database like Postgres
+- add complexer models
+- add automatic hyperparameter tuning
+- reduce container size
 - create s3 Bucket for data / mlflow artifacts
-- Move evidently server, prefect server and mlflow server to cloud with corresponding terraform scripts and/or docker-compose
-- add docstrings and generate docs
+- Move evidently server, prefect server and mlflow server to cloud
+- add docstrings and generate docs with mkdocs
