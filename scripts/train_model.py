@@ -6,10 +6,12 @@ from pathlib import Path
 import mlflow
 from loguru import logger
 from prefect import flow
+from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LinearRegression
 
 from e2e_taxi_ride_duration_prediction.ingestion import get_nyc_taxi_data
 from e2e_taxi_ride_duration_prediction.mlflow_utils import setup_mlflow
+from e2e_taxi_ride_duration_prediction.models import SklearnCompatibleRegressor
 from e2e_taxi_ride_duration_prediction.preprocessing import basic_preprocessing
 from e2e_taxi_ride_duration_prediction.training import (
     dict_vectorize_features,
@@ -35,7 +37,7 @@ def main(
     test_start_month: int = 2,
     test_end_year: int = 2025,
     test_end_month: int = 3,
-):
+) -> tuple[SklearnCompatibleRegressor, dict[str, float], DictVectorizer]:
     """Run the complete ML training pipeline with configurable parameters."""
     ROOT_DIR = Path(__file__).parent.parent
     MODEL_DIR = ROOT_DIR / "models"

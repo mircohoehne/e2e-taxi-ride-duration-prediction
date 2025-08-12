@@ -11,9 +11,9 @@ repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.12.1
     hooks:
+      - id: ruff-format
       - id: ruff-check
         args: [--extend-select=I, --fix]
-      - id: ruff-format
     # enforce conventional commit style
   - repo: https://github.com/jorisroovers/gitlint
     rev: v0.19.1

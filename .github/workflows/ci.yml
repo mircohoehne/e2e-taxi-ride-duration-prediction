@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    if: github.event_name == 'pull_request' || (github.event_name== 'push' && !contains(github.event.head_commit.message, 'Merge pull request'))
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +21,15 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Run formatting
+        run: uv run ruff format --check --diff
+
       - name: Run linting
         run: uv run ruff check . --extend-select=I
+
+
+      - name: Run Typechecks
+        run: uv run ty check
 
       - name: Run Baseline Trainingloop
         run: uv run scripts/train_model.py

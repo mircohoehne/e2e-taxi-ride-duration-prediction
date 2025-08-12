@@ -172,7 +172,9 @@ def test_concatenate_parquet_files(tmp_path):
 def test_get_nyc_taxi_data_download_and_concatenate(
     mock_download, mock_concat, mock_session, tmp_path
 ):
-    def mock_download_side_effect(url, filepath, session=None):
+    def mock_download_side_effect(
+        url: str, filepath: Path, session: requests.Session | None = None
+    ) -> bool:
         sample_df = pl.DataFrame(
             {"tpep_pickup_datetime": ["2023-01-01 10:00:00"], "trip_distance": [1.0]}
         ).with_columns(pl.col("tpep_pickup_datetime").str.to_datetime())
@@ -183,7 +185,7 @@ def test_get_nyc_taxi_data_download_and_concatenate(
 
     mock_download.side_effect = mock_download_side_effect
 
-    def mock_concat_side_effect(file_paths, output_path):
+    def mock_concat_side_effect(file_paths: list[Path], output_path: Path) -> None:
         sample_df = pl.DataFrame(
             {"tpep_pickup_datetime": ["2023-01-01 10:00:00"], "trip_distance": [1.0]}
         ).with_columns(pl.col("tpep_pickup_datetime").str.to_datetime())

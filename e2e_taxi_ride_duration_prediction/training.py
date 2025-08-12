@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Union
+from typing import Union
 
 import joblib
 import mlflow
@@ -9,7 +9,7 @@ import numpy.typing as npt
 import polars as pl
 from loguru import logger
 from prefect import task
-from scipy.sparse import csr_matrix
+from scipy.sparse import spmatrix
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import (
     mean_absolute_error,
@@ -60,9 +60,7 @@ def dict_vectorize_features(
     train_lf: pl.LazyFrame,
     test_lf: pl.LazyFrame,
     features: list[str] | None = None,
-) -> tuple[
-    Union[csr_matrix, np.ndarray], Union[csr_matrix, np.ndarray], DictVectorizer
-]:
+) -> tuple[Union[spmatrix, np.ndarray], Union[spmatrix, np.ndarray], DictVectorizer]:
     dict_vectorizer = DictVectorizer()
     if features:
         train_dicts = train_lf.select(features).collect().to_dicts()
@@ -91,9 +89,9 @@ def vectorize_target(
 @task
 def train_model(
     model: SklearnCompatibleRegressor,
-    X_train: Union[csr_matrix, np.ndarray],
+    X_train: Union[spmatrix, np.ndarray],
     y_train: npt.NDArray,
-) -> Any:
+) -> SklearnCompatibleRegressor:
     """Train sklearn-compatible model."""
     logger.info(f"Training {type(model).__name__}")
     model.fit(X_train, y_train)
@@ -103,7 +101,7 @@ def train_model(
 @task
 def validate_model(
     model: SklearnCompatibleRegressor,
-    X_test: Union[csr_matrix, np.ndarray],
+    X_test: Union[spmatrix, np.ndarray],
     y_test: npt.NDArray,
 ) -> dict[str, float]:
     """Validate sklearn-compatible model."""
@@ -134,7 +132,7 @@ def validate_model(
 def save_model_and_vectorizer(
     model: tuple[SklearnCompatibleRegressor, DictVectorizer],
     save_path: str | Path | None,
-):
+) -> None:
     """Save any model and vectorizer pair."""
     joblib.dump(model, save_path)
     logger.info(f"saved model and vectorizer to {save_path}.")

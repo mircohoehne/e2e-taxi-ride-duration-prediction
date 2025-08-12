@@ -33,6 +33,7 @@ dev = [
   "pytest-cov>=6.2.1",
   "ruff>=0.12.1",
   "scipy-stubs>=1.16.0.2",
+  "ty>=0.0.1a17",
 ]
 
 [build-system]

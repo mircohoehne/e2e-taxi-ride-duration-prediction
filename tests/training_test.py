@@ -8,7 +8,7 @@ import numpy as np
 import polars as pl
 import pytest
 from polars.testing import assert_frame_equal
-from scipy.sparse import csr_matrix
+from scipy.sparse import csr_matrix, spmatrix
 from sklearn.linear_model import LinearRegression
 
 from e2e_taxi_ride_duration_prediction.training import (
@@ -22,7 +22,9 @@ from e2e_taxi_ride_duration_prediction.training import (
 
 
 @pytest.fixture
-def test_data_with_target(test_data, test_target_data) -> pl.LazyFrame:
+def test_data_with_target(
+    test_data: pl.LazyFrame, test_target_data: pl.LazyFrame
+) -> pl.LazyFrame:
     return pl.concat([test_data, test_target_data], how="horizontal").lazy()
 
 
@@ -74,8 +76,8 @@ def test_dict_vectorize_features(test_data):
 
     X_train, X_test, vectorizer = dict_vectorize_features(train_lf, test_lf, features)
 
-    assert isinstance(X_train, csr_matrix)
-    assert isinstance(X_test, csr_matrix)
+    assert isinstance(X_train, spmatrix)
+    assert isinstance(X_test, spmatrix)
     assert X_train.shape[0] == 3
     assert X_test.shape[0] == 2
     assert X_train.shape[1] == X_test.shape[1]
@@ -88,8 +90,8 @@ def test_dict_vectorize_features_all_columns(test_data):
 
     X_train, X_test, vectorizer = dict_vectorize_features(train_lf, test_lf)
 
-    assert isinstance(X_train, csr_matrix)
-    assert isinstance(X_test, csr_matrix)
+    assert isinstance(X_train, spmatrix)
+    assert isinstance(X_test, spmatrix)
     assert X_train.shape[0] == 3
     assert X_test.shape[0] == 2
     assert X_train.shape[1] == X_test.shape[1]
